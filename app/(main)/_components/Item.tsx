@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronDown, ChevronRight, LucideIcon, Plus } from "lucide-react"
+import { ChevronDown, ChevronRight, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react"
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,6 +8,8 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useUser } from "@clerk/clerk-react";
 
 interface ItemProps {
     id?: Id<"documents">;
@@ -18,26 +20,41 @@ interface ItemProps {
     level?: number;
     onExpand?: () => void;
     label: string;
-    onClick: () => void;
+    onClick?: () => void;
     icon: LucideIcon ;
 };
 
 const Item = ({ id, label, onClick, icon: Icon, active, documentIcon, isSearch, level = 0, onExpand, expanded }: ItemProps) => {
     const router = useRouter();
+    const { user } = useUser()
+    const archive = useMutation(api.documents.archive)
     const create = useMutation(api.documents.create);
     const handleExpland = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>{
         event.stopPropagation();
         onExpand?.();
     }
+
+    const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        event.stopPropagation();
+        if (!id) return;
+        const promise = archive({ id });
+
+        toast.promise(promise, {
+            loading: "Archiving File 🔃",
+            success: "File Archived! 👍",
+            error:"Failed to archive file😥"
+        })
+    }
     
     const onCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>{
+        event.stopPropagation();
         if (!id) return;
         const promise = create({ title: "Untitled", parentDocument: id })
             .then((documentId) => {
             if(!expanded){
                 onExpand?.()
             }
-            router.push(`/documents/${documentId}`)
+            //  router.push(`/documents/${documentId}`)
         });
         
         toast.promise(promise, {
@@ -79,7 +96,24 @@ const Item = ({ id, label, onClick, icon: Icon, active, documentIcon, isSearch, 
       )}
       {!!id && (
         <div className="ml-auto flex items-center gap-x-2">
-            <div className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                    <div className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600" role="button">
+                        <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-60" align="start" side="right" forceMount>
+                    <DropdownMenuItem onClick={onArchive}>
+                       <Trash className="h-5 w-5 mr-2" />
+                       Delete
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <div className="text-xs text-muted-foreground p-2">
+                        Last Edited by: {user?.fullName}
+                    </div>
+                </DropdownMenuContent>
+            </DropdownMenu>
+            <div onClick={onCreate} role="button" className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600">
                 <Plus className="h-5 w-5 text-muted-foreground" />
             </div>
         </div>

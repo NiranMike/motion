@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { cn } from '@/lib/utils';
-import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings } from 'lucide-react'
+import { ChevronLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from 'lucide-react'
 import { usePathname } from 'next/navigation';
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from "usehooks-ts";
@@ -11,6 +11,8 @@ import { api } from '@/convex/_generated/api';
 import Item from './Item';
 import { toast } from 'sonner';
 import DocumentList from './DocumentList';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import TrashBox from './TrashBox';
 
 const Navigation = () => {
     const pathname = usePathname();
@@ -100,7 +102,7 @@ const Navigation = () => {
     }
 
     const handleCreate = () => {
-        const promise = create({ title: "Unititled" });
+        const promise = create({ title: "Untitled" });
 
         toast.promise(promise, {
             loading: "Making a new note 🔃",
@@ -135,6 +137,15 @@ const Navigation = () => {
             </div>
             <div className="mt-4">
                  <DocumentList />
+                 <Item label='Add a page' icon={Plus} onClick={handleCreate} />
+                 <Popover>
+                    <PopoverTrigger className='w-full mt-4'>
+                        <Item label='Trash' icon={Trash}  />
+                    </PopoverTrigger>
+                    <PopoverContent className='p-0 w-72' side={isMobile ? "bottom" : "right"}>
+                        <TrashBox />
+                    </PopoverContent>
+                 </Popover>
             </div>
             <div onClick={resetWidth} onMouseDown={handleMouseDown} className='opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0' />
           </aside>
