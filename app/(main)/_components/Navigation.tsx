@@ -13,12 +13,13 @@ import { toast } from 'sonner';
 import DocumentList from './DocumentList';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import TrashBox from './TrashBox';
+import { useSearch } from '@/hooks/use-search';
 
 const Navigation = () => {
     const pathname = usePathname();
     const isMobile = useMediaQuery("(max-width: 768px)");
     const isResizingRef = useRef(false);
-
+    const search = useSearch()
     const sidebarRef = useRef<ElementRef<"aside">>(null);
     const navbarRef = useRef<ElementRef<"div">>(null);
     const [isResetting, setIsResetting] = useState(false);
@@ -126,7 +127,7 @@ const Navigation = () => {
                  label='Search'
                  icon={Search}
                  isSearch
-                 onClick={()=>{}}
+                 onClick={search.onOpen}
                 />
                 <Item 
                  label='Settings'
