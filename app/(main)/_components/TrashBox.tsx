@@ -86,14 +86,14 @@ const TrashBox = () => {
                     </span>
                     <div className='flex items-center'>
                       <div 
-                          className='rounded-sm p-2 hover:bg-neutral-200'
+                          className='rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600'
                           role='button'
                           onClick={(e) => onRestore(e, document._id)}
                         >
                          <Undo className="h-4 w-4 text-muted-foreground" />
                       </div>
                       <ConfirmModal onConfirm={() => onRemove(document._id)}>
-                        <div role="button" className='rounded-sm p-2 hover:bg-neutral-300'>
+                        <div role="button" className='rounded-sm p-2 hover:bg-neutral-300 dark:hover:bg-neutral-600'>
                             <Trash className="h-4 w-4 text-muted-foreground" />
                         </div>
                       </ConfirmModal>

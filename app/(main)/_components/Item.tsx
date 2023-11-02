@@ -74,7 +74,7 @@ const Item = ({ id, label, onClick, icon: Icon, active, documentIcon, isSearch, 
         paddingLeft: level ? `${(level * 12) + 12}px` : "12px"
      }} onClick={onClick} role="button">
         {!!id && (
-            <div onClick={handleExpland} role="button" className="h-full rounded-sm hover:bg-neutral-300 dark:bg-neutral-600 mr-1">
+            <div onClick={handleExpland} role="button" className="h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 mr-1">
                 <ChevronIcon className="h-4 w-4 shrink-0 text-muted-foreground/50" />
             </div>
         )}

@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/provider/theme-provider'
 import './globals.css'
 import { ConvexClientProvider } from '@/components/provider/convex-provider'
 import { Toaster } from "sonner";
+import { ModalProvider } from '@/components/provider/modal-provider'
 
 const space_grotesk = Space_Grotesk({ subsets: ['latin'] })
 
@@ -37,6 +38,7 @@ export default function RootLayout({
         <ConvexClientProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange storageKey='motion-theme'>
             <Toaster position='bottom-right' />
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>
