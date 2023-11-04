@@ -10,7 +10,7 @@ import { useMutation,  } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import Item from './Item';
 import { toast } from 'sonner';
-import DocumentList from './DocumentList';
+import {DocumentList} from './DocumentList';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import TrashBox from './TrashBox';
 import { useSearch } from '@/hooks/use-search';
