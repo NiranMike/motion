@@ -37,7 +37,7 @@ const Item = ({ id, label, onClick, icon: Icon, active, documentIcon, isSearch, 
     const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation();
         if (!id) return;
-        const promise = archive({ id });
+        const promise = archive({ id }).then(() => router.push("/documents"))
 
         toast.promise(promise, {
             loading: "Archiving File 🔃",
@@ -54,7 +54,7 @@ const Item = ({ id, label, onClick, icon: Icon, active, documentIcon, isSearch, 
             if(!expanded){
                 onExpand?.()
             }
-            //  router.push(`/documents/${documentId}`)
+             router.push(`/documents/${documentId}`)
         });
         
         toast.promise(promise, {

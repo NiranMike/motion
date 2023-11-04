@@ -5,7 +5,7 @@ import './globals.css'
 import { ConvexClientProvider } from '@/components/provider/convex-provider'
 import { Toaster } from "sonner";
 import { ModalProvider } from '@/components/provider/modal-provider'
-
+import { EdgeStoreProvider } from "@/lib/edgestore";
 const space_grotesk = Space_Grotesk({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -36,11 +36,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${space_grotesk.className} `}>
         <ConvexClientProvider>
+          <EdgeStoreProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange storageKey='motion-theme'>
             <Toaster position='bottom-right' />
             <ModalProvider />
             {children}
           </ThemeProvider>
+          </EdgeStoreProvider>
         </ConvexClientProvider>
       </body>
     </html>
